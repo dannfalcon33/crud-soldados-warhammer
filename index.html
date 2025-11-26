@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alistamiento Imperial - Administración de Soldados</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <div class="aquila">⩫</div>
+          <h1 class="title-text">Alistamiento Imperial</h1>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">CM</div>
+          <div class="user-name">Comandante Maximus</div>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value" id="countSoldiers"></div>
+          <div class="stat-label">Soldados Activos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="countAdeptusAstares"></div>
+          <div class="stat-label">Adeptus Astartes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="countImperialSoldiers"></div>
+          <div class="stat-label">Guardia Imperial</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">98.7%</div>
+          <div class="stat-label">Eficiencia de Combate</div>
+        </div>
+      </div>
+
+      <!-- Controls Bar -->
+      <div class="controls-bar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Buscar soldado..."
+          />
+        </div>
+        <div class="actions">
+          <button class="btn btn-success" id="addSoldierBtn">
+            <i class="fas fa-plus"></i>
+            Nuevo Recluta
+          </button>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="table-container">
+        <div class="table-header">
+          <div class="table-title">Registro de Soldados Imperiales</div>
+          <div class="table-actions">
+            <button class="btn btn-icon btn-warning">
+              <i class="fas fa-file-export"></i>
+            </button>
+            <button class="btn btn-icon">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <table class="imperial-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Facción</th>
+              <th>Clase</th>
+              <th>Rango</th>
+              <th>División</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="soldiersContainer"></tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Sistema de Alistamiento Imperial © M41. Todos los derechos reservados
+        por el Adeptus Administratum.
+      </div>
+    </div>
+
+    <!-- Modal para agregar/editar soldado -->
+    <div class="modal-overlay" id="soldierModal">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title">Registro de Nuevo Recluta</div>
+          <button class="modal-close" id="closeModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="soldierForm">
+            <div class="form-group">
+              <label class="form-label">Nombre Completo</label>
+              <input
+                type="text"
+                id="fullname"
+                class="form-control"
+                placeholder="Ej: Cassian Valerius"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Facción</label>
+                <select class="form-control" id="facction" required>
+                  <option value="">Seleccionar Facción</option>
+                  <option value="Adeptus Astartes">Adeptus Astartes</option>
+                  <option value="Adepta Sororitas">Adepta Sororitas</option>
+                  <option value="Angeles Oscuros">Angeles Oscuros</option>
+                  <option value="Angeles Sangrientos">
+                    Angeles Sangrientos
+                  </option>
+                  <option value="Templarios Oscuros">Templarios Oscuros</option>
+                  <option value="Adeptus Mechanicus">Adeptus Mechanicus</option>
+                  <option value="Adeptus Custodes">Adeptus Custodes</option>
+                  <option value="Inquisición">Inquisición</option>
+                  <option value="Guardia Imperial">Guardia Imperial</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Clase</label>
+                <select class="form-control" id="classSoldier">
+                  <option value="">Seleccionar Clase</option>
+                  <option value="Marine Espacial">Marine Espacial</option>
+                  <option value="Infantería">Infantería</option>
+                  <option value="Tanquista">Tanquista</option>
+                  <option value="Tech-Priest">Tech-Priest</option>
+                  <option value="Custode">Custode</option>
+                  <option value="Inquisidor">Inquisidor</option>
+                  <option value="Battle Sister">Battle Sister</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Rango</label>
+                <select class="form-control" id="rankSoldier" required>
+                  <option value="">Seleccionar Rango</option>
+                  <option value="Initiate">Initiate</option>
+                  <option value="Battle-Brother">Battle-Brother</option>
+                  <option value="Sergeant">Sergeant</option>
+                  <option value="Lieutenant">Lieutenant</option>
+                  <option value="Captain">Captain</option>
+                  <option value="Chapter Master">Chapter Master</option>
+                  <option value="Commissar">Commissar</option>
+                  <option value="Magos">Magos</option>
+                  <option value="Shield-Captain">Shield-Captain</option>
+                  <option value="Lord Inquisitor">Lord Inquisitor</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">División</label>
+                <input
+                  type="text"
+                  id="division"
+                  class="form-control"
+                  placeholder="Ej: Ultramarines, Cadian 412th"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Estado</label>
+              <select class="form-control" id="status" required>
+                <option value="active">Activo</option>
+                <option value="reserve">Reserva</option>
+                <option value="mia">M.I.A.</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" id="cancelBtn">Cancelar</button>
+          <button class="btn btn-success" id="saveSoldierBtn">
+            <i class="fas fa-save"></i>
+            Guardar Recluta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para confirmar elimacion de soldado-->
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title">Eliminar Recluta</div>
+          <button class="modal-close" id="closeDeleteModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>¿Esta seguro que desea eliminar el recluta?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" id="cancelDeleteBtn">Cancelar</button>
+          <button class="btn btn-danger" id="confirmDeleteBtn">
+            <i class="fas fa-trash"></i>
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="terminal-text">
+      > Sistema de alistamiento operativo<br />
+      > Estado: NORMAL
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
