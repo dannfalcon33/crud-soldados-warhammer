@@ -66,18 +66,6 @@ saveSoldierBtn.addEventListener("click", () => {
   modal.classList.remove("active");
 });
 
-searchInput.addEventListener("input", (e) => {
-  const value = e.target.value.toLowerCase(); // Convertimos a minúsculas para evitar problemas
-
-  // Aquí ocurre la magia del filtrado
-  const filteredList = soldiersList.filter((soldier) => {
-    return soldier.fullname.toLowerCase().includes(value);
-  });
-
-  // Renderizamos la lista filtrada
-  renderSoldiers(filteredList);
-});
-
 function renderSoldiers(data = soldiersList) {
   const soldiersContainer = document.getElementById("soldiersContainer");
   soldiersContainer.innerHTML = "";
